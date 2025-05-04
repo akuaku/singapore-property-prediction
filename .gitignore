@@ -24,14 +24,14 @@ var/
 .ipynb_checkpoints
 
 # Large data files
-*.csv
+##*.csv
 *.xlsx
 *.parquet
 *.pickle
 *.pkl
 
 # Exception: Keep specific important data files
-!data/external/*.csv
+!data/external/##*.csv
 
 # Environment
 .env
