@@ -1,0 +1,43 @@
+{
+  "region": {
+    "North": {
+      "mean": 15.0,
+      "ci_95": 0.5
+    },
+    "Central": {
+      "mean": 10.0,
+      "ci_95": 0.4
+    },
+    "East": {
+      "mean": 12.0,
+      "ci_95": 0.4
+    },
+    "West": {
+      "mean": 13.0,
+      "ci_95": 0.4
+    },
+    "Northeast": {
+      "mean": 13.0,
+      "ci_95": 0.4
+    }
+  },
+  "flat_type": {
+    "3 ROOM": {
+      "mean": 13.0,
+      "ci_95": 0.4
+    },
+    "4 ROOM": {
+      "mean": 12.5,
+      "ci_95": 0.3
+    },
+    "5 ROOM": {
+      "mean": 12.3,
+      "ci_95": 0.4
+    },
+    "EXECUTIVE": {
+      "mean": 13.5,
+      "ci_95": 0.5
+    }
+  },
+  "combined": {}
+}

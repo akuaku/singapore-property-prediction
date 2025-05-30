@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: property-valuation-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://api:4000
+    depends_on:
+      - api
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  hdb-service:
+    build:
+      context: ./backend/ml
+      dockerfile: Dockerfile
+    container_name: property-valuation-hdb
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/ml:/app
+    environment:
+      - MODEL_PATH_HDB=/app/hdb
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    command: ["python", "-m", "api.hdb_api"]
+
+  private-service:
+    build:
+      context: ./backend/ml
+      dockerfile: Dockerfile
+    container_name: property-valuation-private
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./backend/ml:/app
+    environment:
+      - MODEL_PATH_PRIVATE=/app/private
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    command: ["python", "-m", "api.private_property_api"]
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: property-valuation-api
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      - DATABASE_URL=postgres://postgres:${DB_PASSWORD:-postgres}@db:5432/property_valuation
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=property_valuation
+      - DB_USER=postgres
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - HDB_SERVICE_URL=http://hdb-service:5000
+      - PRIVATE_SERVICE_URL=http://private-service:5002
+    depends_on:
+      - db
+      - hdb-service
+      - private-service
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  db:
+    image: postgis/postgis:14-3.2
+    container_name: property-valuation-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=property_valuation
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: property-valuation-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@example.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  pgadmin_data:

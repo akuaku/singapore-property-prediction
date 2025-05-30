@@ -1,0 +1,31 @@
+{
+  "features": [
+    "property_quality_score",
+    "street_name_encoded",
+    "flattype_avg_price",
+    "block_encoded",
+    "town_avg_price",
+    "high_floor_mrt_proximity",
+    "flat_type_4 ROOM",
+    "flat_type_5 ROOM",
+    "region_Central",
+    "region_East"
+  ],
+  "categorical_features": [
+    "town",
+    "region",
+    "flat_type",
+    "flat_model",
+    "floor_area_category",
+    "nearest_mrt_name",
+    "nearest_mrt_line"
+  ],
+  "numerical_features": [
+    "high_floor_mrt_proximity",
+    "property_quality_score",
+    "town_avg_price",
+    "flattype_avg_price",
+    "block_encoded",
+    "street_name_encoded"
+  ]
+}

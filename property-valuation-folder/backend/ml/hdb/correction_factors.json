@@ -1,0 +1,38 @@
+{
+  "region": {
+    "North": 0.95,
+    "Central": 1.15,
+    "Northeast": 0.98,
+    "East": 1.05,
+    "West": 0.93
+  },
+  "flat_type": {
+    "3 ROOM": 0.85,
+    "4 ROOM": 1.0,
+    "5 ROOM": 1.15,
+    "EXECUTIVE": 1.25
+  },
+  "town": {
+    "WOODLANDS": 0.95,
+    "TOA PAYOH": 1.10,
+    "BISHAN": 1.20,
+    "BUKIT MERAH": 1.15,
+    "ANG MO KIO": 1.05,
+    "PUNGGOL": 1.00,
+    "TAMPINES": 1.02,
+    "CLEMENTI": 1.08,
+    "JURONG WEST": 0.92,
+    "PASIR RIS": 0.98,
+    "BEDOK": 1.05,
+    "QUEENSTOWN": 1.18,
+    "BUKIT TIMAH": 1.25
+  },
+  "flat_model": {
+    "Model A2": 0.95,
+    "Simplified": 0.97,
+    "Standard": 1.0,
+    "Premium": 1.15,
+    "Improved": 1.05,
+    "DBSS": 1.20
+  }
+}
